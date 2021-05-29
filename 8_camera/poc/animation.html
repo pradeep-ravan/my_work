@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            height: 6rem;
+            width: 6rem;
+            margin: 7rem;
+        }
+        .box-1{
+            background-color: red;
+            animation: scaleUp 5s;
+            animation-fill-mode: forwards;
+        }
+        .box-2{
+            background-color: blue;
+            animation: moveRightandBack 2s 5;
+            animation-delay: 6s;
+        }
+        .box-3{
+            background-color: gray;
+            animation: fadeAway 2s infinite;
+            animation-delay: 7s;
+        }
+        /* @keyframes identifier_name(i.e- user define)
+            keyframes tell us lifecycle behaviour*/
+        @keyframes scaleUp{
+            0%{
+                transform: scale(1);
+            }
+            25%{
+                transform: scale(2);
+            }
+            50%{
+                transform: scale(1);
+            }
+            100%{
+                transform: scale(2);
+            }
+        }
+        @keyframes moveRightandBack{
+            0%{
+                transform: translateX(0px);
+            }
+            50%{
+                transform: translateX(500px);
+            }
+            100%{
+                transform: translateX(0px);
+            }
+        }
+        @keyframes fadeAway {
+            0%{
+                opacity: 1;
+            }
+            25%{
+                opacity: 0.7;
+            }
+            50%{
+                opacity: 0.5;
+            }
+            75%{
+                opacity: 0.3;
+            }
+            100%{
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box-1"></div>
+    <div class="box-2"></div>
+    <div class="box-3"></div>
+</body>
+</html>
