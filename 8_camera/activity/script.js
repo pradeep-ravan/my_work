@@ -80,12 +80,7 @@ function removeFilter(){
             mediaRecorder.onstop=function(){
                 let blob = new Blob(chunks,{type:'video/mp4'});
                 chunks =[];
-                let blobUrl = URL.createObjectURL(blob);
-                let link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = 'video.mp4';
-                link.click();
-                link.remove();
+                addMediaToGallery(blob,'video');
             }
         }).catch(function(err){
             console.log(err);
@@ -117,10 +112,6 @@ function capture(filter)
         tool.fillStyle = filter;
         tool.fillRect(0,0,c.width,c.height);
     }
-    let link = document.createElement('a');
-    link.download = 'image.png';
-    link.href = c.toDataURL();
-    link.click();
-    link.remove();
+    addMediaToGallery(c.toDataURL(),'img');
     c.remove();
 }
