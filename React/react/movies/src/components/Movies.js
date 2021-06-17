@@ -6,7 +6,6 @@ export default class Movies extends Component {
         this.state={
             movies:getMovies(),
             currSearchText:'',
-            filterMovies:getMovies()
         }
     }
     onDelete = (id)=>{
@@ -19,11 +18,37 @@ export default class Movies extends Component {
     }
 
     handleChange=(e)=>{
-        this.setState({currSearchText:e.target.value})
+        let task = e.target.value;
+        this.setState({currSearchText:task})
+        // if(task==''){
+        //     this.setState({
+        //         filterMovies:this.state.movies,
+        //         currSearchText:''
+        //     })
+        //     return;
+        // } 
+        // let filteredArr = this.state.movies.filter(movieObj=>{
+        //     let title = movieObj.title.trim().toLowerCase();
+        //     return title.includes(task.toLowerCase());
+        // })
+        // this.setState({
+        //     filterMovies:filteredArr,
+        //     currSearchText:task
+        // })
     }
 
     render() {
-        let {movies} = this.state;
+        let {movies,currSearchText} = this.state;
+        let filterMovies = [];
+        if(currSearchText!=''){
+            filterMovies = movies.filter(movieObj=>{
+                    let title = movieObj.title.trim().toLowerCase();
+                    return title.includes(currSearchText.toLowerCase());
+                })
+        }
+        else{
+            filterMovies=movies;
+        }
         return (
             <div className='row'>
                 <div className='col-3'>
@@ -31,19 +56,27 @@ export default class Movies extends Component {
                 </div>
                 <div className='col-9'>
                     <input value={this.currSearchText} onChange={this.handleChange} type='txt'></input>
-                    <table class="table">
+                    <table className="table">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Title</th>
       <th scope="col">Genre</th>
-      <th scope="col">Stock</th>
-      <th scope="col">Rate</th>
+      <th scope="col">
+      <i className="fas fa-sort-up"></i>
+          Stock
+          <i className="fa fa-sort-down"></i>
+          </th>
+      <th scope="col">
+      <i className="fas fa-sort-up"></i>
+          Rate
+          <i className="fa fa-sort-down"></i>
+          </th>
     </tr>
   </thead>
   <tbody>
   {
-    movies.map(movieObj=>(
+    filterMovies.map(movieObj=>(
     <tr scope='row' key={movieObj._id} >  
         <td></td> 
         <td>{movieObj.title}</td>   
