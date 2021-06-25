@@ -14,6 +14,16 @@ body{
     height: 6rem;
     width: 6rem;
 }
+#gallery-button{
+    position: fixed;
+    right: 6rem;
+    top: 65vh;
+    border-radius: 50%;
+    border: 8px solid white;
+    background-color: black;
+    height: 6rem;
+    width: 6rem;
+}
 #click-picture{
     height: 6rem;
     width: 6rem; 
