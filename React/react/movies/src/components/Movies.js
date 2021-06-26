@@ -131,11 +131,10 @@ export default class Movies extends Component {
         return (
             <>
                 {
-                    this.state.movies.length != 0 ?
+                    this.state.movies.length == 0 ?
                     <div className="spinner-border text-primary" role="status">
-  <span className="visually-hidden">Loading...</span>
-</div>
-                  
+                        <span className="sr-only">Loading...</span>
+                    </div>
                         :
                         <div className='container'>
                             <div className='row'>
