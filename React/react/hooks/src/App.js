@@ -9,13 +9,13 @@ import Central from './Context2/Central';
 function App() {
   return (
     <>
-    {/* <Uswo/> */}
-    {/* <Ue1/> */}
-    {/* <Ue2/> */}
-    {/* <Ue3/> */}
-    {/* <Uec1/> */}
+     {/* <Uswo/>  */}
+    {/* <Ue1/>  */}
+     {/* <Ue2/>  */}
+    <Ue3/> 
+     {/* <Uec1/>  */}
     {/* <Main/> */}
-    <Central/>
+    {/* <Central/> */}
     </>
   );
 }
