@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import vid1 from './fashion.mp4';
 import vid2 from './frog.mp4';
 import vid3 from './tree.mp4';
@@ -9,11 +9,25 @@ function Ioa() {
     const callback = entries=>{
         entries.forEach(element => {
             console.log(element); 
+            let el = element.target.childNodes[0];
+            el.play().then(()=>{
+                //is this video is not in viewport then pause it
+                if(!el.paused && !element.isIntersecting){
+                    el.pause()
+                }
+            })
         });
     }
     const observer = new IntersectionObserver(callback,{
         threshold:0.9
     })
+    useEffect(()=>{
+        console.log('Effect');
+        let elements = document.querySelectorAll('.videos')
+        elements.forEach(el=>{
+            observer.observe(el)
+        })
+    },[])
     return (
         <div className='video-container'>
             <div className='videos'>
