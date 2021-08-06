@@ -4,6 +4,8 @@ let introduction =['Hello','I','am','Tushar'];
 // let variable = introduction[2];
 // let name = introduction[3];
 
+//traditional
+/////////////Destructing
 
 // let [greeting,pronoun,variable,name] = introduction;
 // console.log(greeting);
@@ -17,6 +19,8 @@ let introduction =['Hello','I','am','Tushar'];
 // console.log(name);
 // console.log(greeting);
 // console.log(pronoun);
+
+
 
 // let newarr =['Hello'];
 // let [greeting='Howdy',pronoun='has',name='Stark']=newarr;

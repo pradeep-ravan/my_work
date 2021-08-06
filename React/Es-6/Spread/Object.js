@@ -29,12 +29,12 @@ const state = {
 // console.log(state);
 // console.log(copy);
 
-let copy ={...state,address:{...state.address,
-    country:{...state.address.country}}};
+// let copy ={...state,address:{...state.address,
+//     country:{...state.address.country}}};
 
 // copy.address.city='Delhi';
-
-copy.address.country.countrName='India';
+let dcopy = JSON.parse(JSON.stringify(state));
+dcopy.address.country.countrName='India';
 
 console.log(state);
 console.log(copy);
