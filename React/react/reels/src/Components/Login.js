@@ -8,6 +8,9 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const {login,currentUser} =useContext(AuthContext);
     const history = useHistory();
+      const handleSignup = (e) =>{
+          history.push('/signup')
+      } 
      const handleSubmit = async(e)=>{
           console.log('hi');
         e.preventDefault()
@@ -41,6 +44,9 @@ function Login() {
                     <input type='password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
                 </div>
                 <button type='submit' disabled={loading}>Login</button>
+                <div>
+                  <button onClick={handleSignup}>SignUP</button>
+                </div>
                 {error?<h1>{error}</h1>:<></>}
                 </form>
                
