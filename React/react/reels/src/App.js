@@ -8,6 +8,7 @@ import Ioa from './Components/Ioa';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import PrivateRoute from './Components/PrivateRoute';
 import Feed from './Components/Feed';
+import Profile from './Homework/Profile'
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <PrivateRoute exact path='/' component={Feed}/>
         <Route path='/login' component={Login}/>
         <Route path='/signup' component={Signup}/>
+        <Route path='/profile/:id' component={Profile}/>
       </Switch>
       </AuthProvider>
     </Router>

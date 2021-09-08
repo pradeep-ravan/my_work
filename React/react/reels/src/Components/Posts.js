@@ -90,6 +90,7 @@ function Posts({userData=null}) {
     }
     const observer = new IntersectionObserver(callback,{ threshold:0.85 });
     useEffect(()=>{
+      let mounted = true;
       let parr=[];
       const unsub = database.posts.orderBy('createdAt','desc').onSnapshot(querySnapshot=>{
         parr=[];
@@ -113,6 +114,7 @@ function Posts({userData=null}) {
         observer.disconnect();
       }
     },[posts])
+    console.log("posts ->",posts);
     return (
       <>
         <div className='place'>
