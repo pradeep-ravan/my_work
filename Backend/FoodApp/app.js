@@ -36,9 +36,14 @@ userRouter
     .route("/:id")
     .get(getUserById);
 authRouter
-    .post("/signup",signupUser)
+    .post("/signup",setCreatedAt,signupUser)
     .post("/login",loginUser); 
 //database
+//middleware
+function setCreatedAt(req, res, next) {
+    req.body.createdAt = new Date().toISOString();
+    next();
+}
 let user = [];
 function signupUser(req, res) {
     //email,user name,password
