@@ -7,7 +7,8 @@ const express= require("express");
 // server init
 const app=express();
 //post ki chije  accept
-app.use(express.json());
+//folder designate
+
 //get:function-> route ->path
 //http method :-
 //(i) get:- to get data from backend server
@@ -15,12 +16,42 @@ app.use(express.json());
 //(iii)patch : to update something
 //(iv)delete ; to delete something from backend server
 
-let user = {   
-};
 //getting data from server
 //giving data from server
 //crud app
 //create
+app.use(express.static('public'));
+app.use(express.json());
+const userRouter = express.Router();
+const authRouter = express.Router();
+app.use('/api/user',userRouter);
+app.use('/api/auth',authRouter);
+userRouter
+    .route("/")
+    .get(getUser)
+    .post(createUser)
+    .patch(updateUser)
+    .delete(deleteUser);
+userRouter
+    .route("/:id")
+    .get(getUserById);
+authRouter
+    .post("/signup",signupUser)
+    .post("/login",loginUser); 
+//database
+let user = [];
+function signupUser(req, res) {
+    //email,user name,password
+    let { email, password, name } = req.body;
+    console.log("user",req.body);
+    user.push({
+        email, name, password
+    })
+    res.status(200).json({
+        message: "user created",
+        createdUser : req.body
+    })
+}
 function createUser(req, res) {
     console.log("req.data", req.body);
     user = req.body;
@@ -47,19 +78,12 @@ function getUserById(req, res) {
     console.log(req.params.id);
     res.status(200).send("hello");
 }
-//mounting in express
-const router = express.Router();
-app.use('/api/user',router);
 
-router.
-route("/")
-.get(getUser)
-.post(createUser)
-.patch(updateUser)
-.delete(deleteUser);
-router
-.route("/:id")
-.get(getUserById);
+function loginUser(req, res) {
+    
+}
+//mounting in express
+
 // app.post("/api/user", createUser) ;
 // //get
 // app.get("/api/user", getUser);
