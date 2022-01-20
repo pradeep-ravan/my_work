@@ -52,8 +52,9 @@ function setCreatedAt(req, res, next) {
     req.body.createdAt = new Date().toISOString();
     next();
 }
-let user = [];
-function signupUser(req, res) {
+// let user = [];
+const userModel = require("../FoodApp/models/userModel");
+async function signupUser(req, res) {
     //email,user name,password
     try {
         let userObj = req.body;

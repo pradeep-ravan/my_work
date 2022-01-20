@@ -40,10 +40,16 @@ const userSchema = new mongoose.Schema({
         validate: function() {
             return this.password == this.confirmPassword
         }
+    },
+    createdAt: {
+        type: Date
     }
 })
-
+userSchema.pre("save", function () {
+    //db confirm password will not saved
+    this.confirmPassword = undefined;
+})
 const userModel = mongoose.model("userModel", userSchema);
 
 
- 
+ module.exports = userModel
