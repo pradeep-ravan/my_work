@@ -41,22 +41,41 @@ authRouter
 //database
 //middleware
 function setCreatedAt(req, res, next) {
+    //{}
+    let body = req.body;
+    let length = Object.keys(body).length;
+    if(length==0){
+        return res.status(400).json({
+            message: "can't create user when body is empty"
+        })
+    }
     req.body.createdAt = new Date().toISOString();
     next();
 }
 let user = [];
 function signupUser(req, res) {
     //email,user name,password
-    let { email, password, name } = req.body;
-    console.log("user",req.body);
-    user.push({
-        email, name, password
-    })
-    res.status(200).json({
+    try {
+        let userObj = req.body;
+        console.log("userObj",req.body);
+        let user = await userModel.create(userObj);
+        console.log("user", user);
+        
+        // put in database
+        // user.push({
+        //     email, name, password
+        // })
+        res.status(200).json({
         message: "user created",
-        createdUser : req.body
-    })
+        createdUser : user
+        })
+    } catch (err) {
+        res.status(500).json({
+            message:err.message
+        })
+    }
 }
+    
 function createUser(req, res) {
     console.log("req.data", req.body);
     user = req.body;
