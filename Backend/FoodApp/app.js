@@ -28,13 +28,13 @@ app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
 userRouter
     .route("/")
-    .get(getUser)
-    .post(createUser)
-    .patch(updateUser)
-    .delete(deleteUser);
+    .get(getUsers);
+    
 userRouter
     .route("/:id")
-    .get(getUserById);
+    .get(getUserById)
+    .patch(updateUser)
+    .delete(deleteUser);
 authRouter
     .post("/signup",setCreatedAt,signupUser)
     .post("/login",loginUser); 
@@ -77,16 +77,28 @@ async function signupUser(req, res) {
     }
 }
     
-function createUser(req, res) {
-    console.log("req.data", req.body);
-    user = req.body;
-    res.status(200).send("data received and user added");
+// function createUser(req, res) {
+//     console.log("req.data", req.body);
+//     user = req.body;
+//     res.status(200).send("data received and user added");
+// }
+//find
+async function getUsers(req, res){
+    try{
+        let users = await userModel.find();
+        res.status(200).json({
+            "message": "list of all the users",
+            users: users
+        })
+    }catch(err) {
+        res.status(500).json({
+            error:err.message,
+            "message": "can't get users"
+        })
+    }
+   
 }
-function getUser(req, res){
-    console.log("user request");
-    // for sending key value pair
-    res.json(user);
-}
+//findByIdAndUpdate
 function updateUser(req, res) {
     let obj = req.body;
     for(let key in obj){
@@ -94,10 +106,12 @@ function updateUser(req, res) {
     }
     res.status(200).json(user);
 }
+//findByIdAndDelete
 function deleteUser(req, res) {
     user = {};
     res.status(200).json(user);
 }
+//id
 function getUserById(req, res) {
 
     console.log(req.params.id);
@@ -105,7 +119,9 @@ function getUserById(req, res) {
 }
 
 function loginUser(req, res) {
-    
+    //email, password -> userModel ->
+    //email??
+    //email -> user get -> password
 }
 //mounting in express
 
