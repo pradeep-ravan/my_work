@@ -27,21 +27,29 @@ function setCreatedAt(req, res, next) {
     //     res.status(200).send("data received and user added");
     // }
     //find
-async function getUsers(req, res){
-        try{
-            let users = await userModel.find();
+async function signupUser(req, res) {
+        //email,user name,password
+        try {
+            let userObj = req.body;
+            console.log("userObj",req.body);
+            let user = await userModel.create(userObj);
+            console.log("user", user);
+            
+            // put in database
+            // user.push({
+            //     email, name, password
+            // })
             res.status(200).json({
-                "message": "list of all the users",
-                users: users
+            message: "user created",
+            createdUser : user
             })
-        }catch(err) {
+        } catch (err) {
             res.status(500).json({
-                error:err.message,
-                "message": "can't get users"
+                message:err.message
             })
         }
-       
     }
+
     
     
 async function loginUser(req, res) {
@@ -49,18 +57,26 @@ async function loginUser(req, res) {
         try{
             if(req.body.email){
                 let user =await  userModel.findOne({email:req.body.email})
-                if(user.email==req.body.email && user.password==req.body.password){
-                   return res.status(200).json({
-                        user,
-                        "message": "user logged in"
-                    })
-                }else{
+                if(user){
+                    if(user.password==req.body.password){
+                        //header
+                        res.cookie("test","1234",{ httpOnly: true })
+                        return res.status(200).json({
+                             user,
+                             "message": "user logged in"
+                         })
+                     }else{
+                         return res.status(401).json({
+                             "message": "Email or password is wrong"
+                         })
+                     }
+                } else {
                     return res.status(401).json({
                         "message": "Email or password is wrong"
                     })
                 }
             }else{
-                 return res.json(403).json({
+                 return res.status(403).json({
                     message: " Email is not present"
                 })
             }
@@ -73,4 +89,6 @@ async function loginUser(req, res) {
         //email??
         //email -> user get -> password
     }
+    let flag = true;
+
 module.exports = authRouter;

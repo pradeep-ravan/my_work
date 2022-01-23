@@ -2,10 +2,12 @@
 // npm i express
 // npm i nodemon
 const express= require("express");
+
 //Server : route => request ->responsive/file
 //File system : path->interact/type -> file/folder
 // server init
 const app=express();
+const cookieParser = require("cookie-parser"); 
 //post ki chije  accept
 //folder designate
 
@@ -22,8 +24,9 @@ const app=express();
 //create
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cookieParser());
 const authRouter = require("./Routers/authRouter");
-const userRouter = require("./Routers/userRouters");
+const userRouter = require("./Routers/userRouter");
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
 

@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const express= require("express");
 const userRouter = express.Router();
+const protectRoute = require("../Routers/authHelper");
 userRouter
     .route("/:id")
     .get(getUserById)
@@ -8,30 +9,24 @@ userRouter
     .delete(deleteUser)
 userRouter
     .route("/")
-    .get(getUsers);
+    .get(protectRoute,getUsers);
     //findByIdAndUpdate
-async function signupUser(req, res) {
-        //email,user name,password
-        try {
-            let userObj = req.body;
-            console.log("userObj",req.body);
-            let user = await userModel.create(userObj);
-            console.log("user", user);
-            
-            // put in database
-            // user.push({
-            //     email, name, password
-            // })
+async function getUsers(req, res){
+        try{
+            let users = await userModel.find();
             res.status(200).json({
-            message: "user created",
-            createdUser : user
+                "message": "list of all the users",
+                users: users
             })
-        } catch (err) {
+        }catch(err) {
             res.status(500).json({
-                message:err.message
+                error:err.message,
+                "message": "can't get users"
             })
         }
+       
     }
+
 function updateUser(req, res) {
         let obj = req.body;
         for(let key in obj){
@@ -50,5 +45,6 @@ function getUserById(req, res) {
         console.log(req.params.id);
         res.status(200).send("hello");
     }    
+
 module.exports = userRouter;
 
