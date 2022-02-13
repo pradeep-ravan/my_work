@@ -5,7 +5,8 @@ const {JWT_KEY} = require("../../../secrets");
 const authRouter = express.Router();
 authRouter
     .post("/signup",setCreatedAt,signupUser)
-    .post("/login",loginUser); 
+    .post("/login",loginUser)
+    .post("/forgetPassword", forgetPassword)
 
 function setCreatedAt(req, res, next) {
         //{}
@@ -50,10 +51,7 @@ async function signupUser(req, res) {
                 message:err.message
             })
         }
-    }
-
-    
-    
+    } 
 async function loginUser(req, res) {
         //email, password -> userModel ->
         try{
@@ -93,6 +91,12 @@ async function loginUser(req, res) {
         //email??
         //email -> user get -> password
     }
+async function forgetPassword(req, res) {
+    let email = req.body.email;
+    let user = await userModel.findOne({
+        email
+    })
+}
     let flag = true;
 
 module.exports = authRouter;
