@@ -43,14 +43,20 @@ const userSchema = new mongoose.Schema({
             return this.password == this.confirmPassword
         }
     },
-    createdAt: {
-        type: Date
-    }
+    createdAt: Date,
+    token: String
 })
 userSchema.pre("save", function () {
     //db confirm password will not saved
     this.confirmPassword = undefined;
 })
+//middleware
+userSchema.methods.resetHandler = function (password, confirmPassword){
+    this.password=password;
+    this.confirmPassword=confirmPassword;
+    //token reuse is not possible
+    this.token=undefined;
+}
 const userModel = mongoose.model("userModel", userSchema);
 
 

@@ -9,7 +9,7 @@ userRouter
     .delete(deleteUser)
 userRouter
     .route("/")
-    .get(protectRoute,getUsers);
+    .get(getUsers);
     //findByIdAndUpdate
 async function getUsers(req, res){
         try{
