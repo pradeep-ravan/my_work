@@ -3,6 +3,7 @@ const express= require("express");
 const jwt = require("jsonwebtoken");
 const {JWT_KEY} = require("../../../secrets");
 const authRouter = express.Router();
+let emailSender=require("./../externalServices/emailSender");
 authRouter
     .post("/signup",setCreatedAt,signupUser)
     .post("/login",loginUser)
@@ -103,6 +104,7 @@ async function forgetPassword(req, res) {
         // nodemailer -> through table tag
         //service -. gmail
         let user = await userModel.findOne({ email });
+        await emailSender(seq, user.email);
         console.log(user);
         if(user?.token){
                 return res.status(200).json({
@@ -134,8 +136,16 @@ async function resetPassword(req, res) {
             //findOne
             let user = await userModel.findOne({ token });
             if (user){
-                user.resetHandler(password, confirmPassword);
+               // user.resetHandler(password, confirmPassword);
+                user.password = password;
+                user.confirmPassword = confirmPassword;
+                //token reuse not possible
+                user.token = undefined;
+                console.log(user);
                 await user.save();
+                res.status(200).json({
+                    message: "user password changed"
+                })
             }else{
                 return res.status(404).json({
                     message: "incorrect token"
