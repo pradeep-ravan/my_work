@@ -27,8 +27,10 @@ app.use(express.json());
 app.use(cookieParser());
 const authRouter = require("./Routers/authRouter");
 const userRouter = require("./Routers/userRouter");
+const planRouter = require("./Routers/planRouter");
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
+app.use('/api/plan',planRouter);
 
     
 
