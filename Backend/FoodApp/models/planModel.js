@@ -9,7 +9,7 @@ mongoose.connect(DB_LINK,{
     console.log("err",err);
 })
 
-
+//
 
 
 //syntax
