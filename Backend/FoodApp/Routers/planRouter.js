@@ -34,6 +34,7 @@ async function createPlan(req, res) {
 }
 async function getPlans(req, res){
         try{
+            console.log(req.query);
             let Plans = await PlanModel.find();
             res.status(200).json({
                 "message": "list of all the plans",
