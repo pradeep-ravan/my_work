@@ -34,12 +34,23 @@ async function createPlan(req, res) {
 }
 async function getPlans(req, res){
         try{
-            console.log(req.query);
-            let plansPromise = PlanModel.find();
-            
+            //console.log(req.query);
+            let ans = JSON.parse(req.query.myquery);
+            console.log("ans",ans);
+            let plansQuery = PlanModel.find(ans);
+            let sortField = req.query.sort;
+            let sortQuery = plansQuery.sort(`-${sortField}`);
+            let params = req.query.select.split("%").join(" ");
+            let fileteredQuery = sortQuery.select(`${params} -_id`);
+            //pagination
+            let page = Number(req.query.page) || 1;
+            let limit = Number(req.query.limit) || 3;
+            let toSkip = (page - 1) * limit;
+            let paginatedResultPromise = fileteredQuery.skip(toSkip).limit(limit);
+            let result = await paginatedResultPromise;
             res.status(200).json({
                 "message": "list of all the plans",
-                Plans: Plans
+                Plans: result
             })
         }catch(err) {
             res.status(500).json({
