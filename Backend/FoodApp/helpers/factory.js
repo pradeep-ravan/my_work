@@ -50,13 +50,24 @@ module.exports.getElements = function (ElementModel) {
        
     }
 }
-module.exports.updateElements = function (ElementModel) {
+module.exports.updateElement = function (ElementModel) {
     return async function (req, res) {
         let {id} = req.body;
         try{
             // await ElementModel.findByIdAndUpdate({ _id:id }, req.body,{runValidators:true}); 
             let element = await ElementModel.findbyId(id); 
-            res.status(200).json(element);
+            if (element) {
+                delete req.body.id
+                for(let key in req.body){
+                    element[key] = req.body[key];
+                }
+                await element.save();
+                res.status(200).json(element);
+            }else {
+                res.status(404).json({
+                    message: "resource not found"
+                })
+            }
         }catch (err) {
             console.log(err);
             res.status(500).json({
@@ -69,17 +80,28 @@ module.exports.updateElements = function (ElementModel) {
            
         }
 }
-module.exports.deleteElements = function (ElementModel) {
-    try{
-        let element = await ElementModel.deleteOne({ _id:id }, { token:seq }); 
-        let element = await ElementModel.findOne({ _id:id }); 
-        res.status(200).json(element);
-    }catch (err) {
-        console.log(err);
-        res.status(500).json({
-            message: "server error"
-        });
+module.exports.deleteElement = function (ElementModel) {
+    return async function deletePlan(req, res){
+        let { id } = req.body;
+        try{
+            let element = await ElementModel.findByIdAndDelete(id, req.body); 
+           // let element = await ElementModel.findOne({ _id: id }); 
+            if(!element){
+                res.status(404).json({
+                    message: "resource not found"
+                })
+            } else {
+                res.status(200).json(element);
+            }
+            
+        }catch (err) {
+            console.log(err);
+            res.status(500).json({
+                message: "server error"
+            });
+        }
     }
+   
 }
 module.exports.getElementById = function (ElementModel){
     return async function (req, res) {

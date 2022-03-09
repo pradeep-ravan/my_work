@@ -3,7 +3,11 @@ const express= require("express");
 const PlanRouter = express.Router();
 const factory = require("../helpers/factory");
 const protectRoute = require("../Routers/authHelper");
-
+const createPlan = factory.createElement(PlanModel);
+const getPlans = factory.getElements(PlanModel);
+const updatePlan = factory.updateElement(PlanModel);
+const deletePlan = factory.deleteElement(PlanModel);
+const getPlanById = factory.getElementById(PlanModel);
 PlanRouter.use(protectRoute);
 PlanRouter
     .route("/:id")
@@ -14,9 +18,9 @@ PlanRouter
     .route("/")
     .get(getPlans)
     .post(createPlan)
-    //findByIdAndUpdate
 
-const createPlan = factory.createElement(PlanModel);
+
+
 // async function createPlan(req, res) {
 //     try{
 //         let plan = req.body;
@@ -37,7 +41,7 @@ const createPlan = factory.createElement(PlanModel);
 //         })
 //     }
 // }
-const getPlans = factory.getElements(PlanModel);
+
 // async function getPlans(req, res){
 //         try{
 //             //console.log(req.query);
@@ -66,7 +70,7 @@ const getPlans = factory.getElements(PlanModel);
 //         }
        
 //     }
-const updatePlan = factory.updateElement(PlanModel);
+
 // async function updatePlan(req, res) {
 //     try{
 //         await PlanModel.updateOne({ name }, { token:seq }); 
@@ -84,13 +88,13 @@ const updatePlan = factory.updateElement(PlanModel);
        
 //     }
     //findByIdAndDelete
-const deletePlan = factory.deleteElement(PlanModel);
-async function deletePlan(req, res) {
-        plan = {};
-        res.status(200).json(plan);
-    }
+
+// async function deletePlan(req, res) {
+//         plan = {};
+//         res.status(200).json(plan);
+//     }
     //id
-const getPlanById = factory.getElementById(PlanModel);
+
 // async function getPlanById(req, res) {
 //     try{
 //          let id = req.params.id;

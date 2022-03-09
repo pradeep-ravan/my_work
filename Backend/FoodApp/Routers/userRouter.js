@@ -3,6 +3,11 @@ const express= require("express");
 const userRouter = express.Router();
 const protectRoute = require("../Routers/authHelper");
 const factory = require("../helpers/factory");
+const createUser = factory.createElement(userModel);
+const getUsers = factory.getElements(userModel);
+const updateUser = factory.updateElement(userModel);
+const deleteUser = factory.deleteElement(userModel);
+const getUserById = factory.getElementById(userModel);
 userRouter
     .route("/:id")
     .get(protectRoute, authorizeUser(["admin", "manager"]), getUserById)
@@ -14,7 +19,7 @@ userRouter
     .post(protectRoute,authorizeUser(["admin"]), createUser);
     //findByIdAndUpdate
     
-const createUser = factory.createElement(userModel);
+    
 
 // async function createUser(req, res) {
 //         try{
@@ -36,40 +41,40 @@ const createUser = factory.createElement(userModel);
 //             })
 //         }
 //     }
-async function getUsers(req, res){
-        try{
-            let users = await userModel.find();
-            res.status(200).json({
-                "message": "list of all the users",
-                users: users
-            })
-        }catch(err) {
-            res.status(500).json({
-                error:err.message,
-                "message": "can't get users"
-            })
-        }
+// async function getUsers(req, res){
+//         try{
+//             let users = await userModel.find();
+//             res.status(200).json({
+//                 "message": "list of all the users",
+//                 users: users
+//             })
+//         }catch(err) {
+//             res.status(500).json({
+//                 error:err.message,
+//                 "message": "can't get users"
+//             })
+//         }
        
-    }
+//     }
 
-function updateUser(req, res) {
-        let obj = req.body;
-        for(let key in obj){
-            user[key] = obj[key];
-        }
-        res.status(200).json(user);
-    }
-    //findByIdAndDelete
-function deleteUser(req, res) {
-        user = {};
-        res.status(200).json(user);
-    }
-    //id
-function getUserById(req, res) {
+// function updateUser(req, res) {
+//         let obj = req.body;
+//         for(let key in obj){
+//             user[key] = obj[key];
+//         }
+//         res.status(200).json(user);
+//     }
+//     //findByIdAndDelete
+// function deleteUser(req, res) {
+//         user = {};
+//         res.status(200).json(user);
+//     }
+//     //id
+// function getUserById(req, res) {
     
-        console.log(req.params.id);
-        res.status(200).send("hello");
-    }    
+//         console.log(req.params.id);
+//         res.status(200).send("hello");
+//     }    
 function authorizeUser(rolesArr) {
     return async function (req, res, next) {
         let uid = req.uid;
