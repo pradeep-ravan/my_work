@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const express= require("express");
 const userRouter = express.Router();
 const protectRoute = require("../Routers/authHelper");
+const factory = require("../helpers/factory");
 userRouter
     .route("/:id")
     .get(protectRoute, authorizeUser(["admin", "manager"]), getUserById)
@@ -9,8 +10,32 @@ userRouter
     .delete(protectRoute, authorizeUser(["admin"]) ,deleteUser)
 userRouter
     .route("/")
-    .get(protectRoute, getUsers);
+    .get(protectRoute,authorizeUser(["admin"]), getUsers)
+    .post(protectRoute,authorizeUser(["admin"]), createUser);
     //findByIdAndUpdate
+    
+const createUser = factory.createElement(userModel);
+
+// async function createUser(req, res) {
+//         try{
+//             let user = req.body;
+//             if (user) {
+//                     user = await userModel.create(user);
+//                     res.status(200).json({
+//                     user: user
+//                 });
+//             } else {
+//                 res.status(200).json({
+//                     message: "kindly enter data"
+//                 });
+//             }
+//         }catch (err){
+//             console.log(err);
+//             res.status(500).json({
+//                 message: "Server error"
+//             })
+//         }
+//     }
 async function getUsers(req, res){
         try{
             let users = await userModel.find();
