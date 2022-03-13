@@ -40,6 +40,10 @@ const planSchema = new mongoose.Schema({
             message: "Discount must be less than actual price",
         },
     },
+    reviews: {
+        type:[mongoose.Schema.ObjectId],   //array of object id
+        ref:"reviewModel"
+    }
 })
  
 const planModel = mongoose.model("planModel", planSchema);

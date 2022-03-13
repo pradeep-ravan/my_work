@@ -34,3 +34,5 @@ const reviewSchema = new mongoose.Schema({
         required: [true, "Review must belong to a plan"]
     },
 })
+const ReviewModel = mongoose.model("reviewModel", reviewSchema);
+module.exports = ReviewModel;
