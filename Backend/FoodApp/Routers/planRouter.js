@@ -1,4 +1,4 @@
-const PlanModel = require("../models/planModel");
+const PlanModel = require("../models/PlanModel");
 const express= require("express");
 const PlanRouter = express.Router();
 const factory = require("../helpers/factory");

@@ -1,4 +1,4 @@
-// npm init -y
+// npm init -y                                   2:40:00
 // npm i express
 // npm i nodemon
 const express= require("express");
@@ -28,7 +28,7 @@ app.use(cookieParser());
 const authRouter = require("./Routers/authRouter");
 const userRouter = require("./Routers/userRouter");
 const planRouter = require("./Routers/planRouter");
-const reviewRouter = require("./Routers/reviewRouter");
+const reviewRouter = require("./Routers/reviewRouter"); 
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
 app.use('/api/plan',planRouter);
