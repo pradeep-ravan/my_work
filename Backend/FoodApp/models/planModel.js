@@ -43,7 +43,8 @@ const planSchema = new mongoose.Schema({
     reviews: {
         type:[mongoose.Schema.ObjectId],   //array of object id
         ref:"reviewModel"
-    }
+    },
+    averageRating: Number
 })
  
 const planModel = mongoose.model("planModel", planSchema);

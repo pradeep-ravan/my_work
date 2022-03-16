@@ -11,6 +11,13 @@ const createReview = async function (req, res){
         let planId = review.plan;
         let plan = await PlanModel.findById(planId);
         plan.reviews.push(review["_id"]);
+        if(plan.averageRating){
+            let sum = plan.averageRating * plan.reviews.length; 
+            let finalAvgRating = (sum + review.rating) / (plan.review.length + 1);
+            plan.averageRating = finalAvgRating;
+        }else{
+            plan.averageRating = review.rating;
+        }  
         await plan.save();
         res.status(200).json({
             message:"review created",
@@ -54,21 +61,5 @@ ReviewRouter
     .route("/")
     .get(getReviews)
     .post(createReview)
-ReviewRouter.route("/top3plans").get(Top3Plans);
-async function Top3Plans(){
-    //review Model -> get me all the plans decreasing order of rating
-    try{
-        const reviews = await ReviewModel.find().limit(3).sort({
-            rating: -1
-        });
-        res.status(201).json({
-            reviews,
-            message: "reviews send"
-        })
-    }catch(err){
-        res.status(400).json({
-            err: err.message
-        })
-    }
-}
+
 module.exports=ReviewRouter;
