@@ -1,4 +1,4 @@
-// npm init -y                                   2:40:00
+// npm init -y                                   8-23:00
 // npm i express
 // npm i nodemon
 const express= require("express");
@@ -29,10 +29,12 @@ const authRouter = require("./Routers/authRouter");
 const userRouter = require("./Routers/userRouter");
 const planRouter = require("./Routers/planRouter");
 const reviewRouter = require("./Routers/reviewRouter"); 
+const bookingRouter = require("./Routers/bookingRouter");
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
 app.use('/api/plan',planRouter);
 app.use('/api/review',reviewRouter);
+app.use('/api/booking', bookingRouter);
 
     
 
@@ -55,3 +57,7 @@ app.listen(8080,function(){
     console.log("server started");
 })
 // /port , ip, localhost
+app.use(function (req, res){
+    res.status(404).sendFile
+        (path.join(__dirname, "404.html"));
+})
