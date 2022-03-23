@@ -27,7 +27,8 @@ const bookingSchema = new mongoose.Schema({
    status: {
        type: String,
        enum: ["pending","failed","sucess"],
-       required: true
+       required: true,
+       default: "pending"
    }
 })
 const bookingModel = mongoose.model("bookingModel", bookingSchema);

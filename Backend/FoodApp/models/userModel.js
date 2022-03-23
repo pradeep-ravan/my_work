@@ -43,12 +43,19 @@ const userSchema = new mongoose.Schema({
             return this.password == this.confirmPassword
         }
     },
-    createdAt: Date,
+    createdAt: {
+        type: String
+    },
     token: String,
+    validUpto: Date,
     role:{
         type: String,
         enum: ["admin", "user", "manager"],
         default: "user"
+    },
+    bookings: {
+        type: [mongoose.Schema.ObjectId],
+        ref: "bookingModel"
     }
 })
 userSchema.pre("save", function () {

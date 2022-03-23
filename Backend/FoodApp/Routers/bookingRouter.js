@@ -1,65 +1,59 @@
-// const express = require("express");
-// const ReviewRouter = express.Router();
-const { protectRoute } = require("../Routers/authHelper");
+const express = require("express");
+const bookingRouter = express.Router();
+// const ReviewModel = require("../models/reviewModel");
+const protectRoute  = require("../Routers/authHelper");
 const bookingModel = require("../models/bookingModel");
-const PlanModel = require("../models/PlanModel");
+const userModel = require("../models/userModel");
 const factory = require("../helpers/factory");
-const createbooking = async function (req, res){
-    // try{
-    //     let review = await ReviewModel.create(req.body);
-    //     console.log("review",review);
-    //     let planId = review.plan;
-    //     let plan = await PlanModel.findById(planId);
-    //     plan.reviews.push(review["_id"]);
-    //     if(plan.averageRating){
-    //         let sum = plan.averageRating * plan.reviews.length; 
-    //         let finalAvgRating = (sum + review.rating) / (plan.review.length + 1);
-    //         plan.averageRating = finalAvgRating;
-    //     }else{
-    //         plan.averageRating = review.rating;
-    //     }  
-    //     await plan.save();
-    //     res.status(200).json({
-    //         message:"review created",
-    //         review:review
-    //     })
-    // }catch(err){
-    //     res.status(500).json({
-    //         message: err.message
-    //     })
-    // }
+const initiateBooking = async function (req, res){
+    try{
+            let booking = await bookingModel.create(req.body);
+            let bookingId = booking["_id"];
+            let userId = req.body.user;
+            let user = await userModel.findById(userId);
+            user.bookings.push(bookingId);
+            await user.save();
+            res.status(200).json({
+            message:"booking created",
+            booking:booking
+        })
+    }catch(err){
+        res.status(500).json({
+            message: err.message
+        })
+    }
 };
 const getbookings = factory.getElements(bookingModel);
 const updatebooking = factory.updateElement(bookingModel);
 const deletebooking = async function (req, res){
-    // try{
-    //     let review = await ReviewModel.findByIdAndDelete(req.body.id);
-    //     console.log("review",review);
-    //     let planId = review.plan;
-    //     let plan = await PlanModel.findById(planId);
-    //     let indexOfReview = plan.review.indexOf(review["_id"]);
-    //     plan.review.splice(indexOfReview, 1);
-    //     await plan.save();
-    //     res.status(200).json({
-    //         message:"review created",
-    //         review:review
-    //     })
-    // }catch(err){
-    //     res.status(500).json({
-    //         message: err.message
-    //     })
-    // }
+    try{
+        let booking = await bookingModel.findByIdAndDelete(req.body.id);
+        console.log("booking",booking);
+        let userId = booking.user;
+        let user = await userModel.findById(userId);
+        let indexOfbooking = user.bookings.indexOf(booking["_id"]);
+        user.booking.splice(indexOfbooking, 1);
+        await user.save();
+        res.status(200).json({
+            message:"booking deleted",
+            booking:booking
+        })
+    }catch(err){
+        res.status(500).json({
+            message: err.message
+        })
+    }
 };
-const getbooking = factory.getElement(bookingModel);
-// ReviewRouter.use(protectRoute);
+const getbookingById = factory.getElementById(bookingModel);
+bookingRouter.use(protectRoute);
 bookingRouter
     .route("/:id")
-    .get(getbooking)
+    .get(getbookingById)
     .patch(protectRoute, updatebooking)
     .delete(protectRoute, deletebooking)
 bookingRouter
     .route("/")
     .get(getbookings)
-    .post(protectRoute, createbooking)
+    .post(protectRoute, initiateBooking)
 
 module.exports=bookingRouter;
