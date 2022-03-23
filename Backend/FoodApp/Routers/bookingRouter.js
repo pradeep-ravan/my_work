@@ -5,6 +5,12 @@ const protectRoute  = require("../Routers/authHelper");
 const bookingModel = require("../models/bookingModel");
 const userModel = require("../models/userModel");
 const factory = require("../helpers/factory");
+const Razorpay = require("razorpay");
+let { KEY_ID, KEY_SECRET } = require("../../../secrets");
+var razorpay = new Razorpay({
+    key_id: KEY_ID,
+    key_secret: KEY_SECRET
+});
 const initiateBooking = async function (req, res){
     try{
             let booking = await bookingModel.create(req.body);
@@ -13,10 +19,26 @@ const initiateBooking = async function (req, res){
             let user = await userModel.findById(userId);
             user.bookings.push(bookingId);
             await user.save();
+            const payment_capture = 1;
+            const amount = 500;
+            const currency = "INR";
+
+            const options = {
+                amount,
+                currency,
+                receipt: `rs_${bookingId}`,
+                payment_capture,
+            };
+
+            const response = await razorpay.orders.create(options);
+            console.log(response);
             res.status(200).json({
-            message:"booking created",
-            booking:booking
-        })
+                id: response.id,
+                currency: response.currency,
+                amount: response.amount,
+                booking:booking,
+                message:"booking created"
+            });
     }catch(err){
         res.status(500).json({
             message: err.message
