@@ -47,6 +47,24 @@ const initiateBooking = async function (req, res){
 };
 const getbookings = factory.getElements(bookingModel);
 const updatebooking = factory.updateElement(bookingModel);
+async function verifyPayment (req, res) {
+    const secret = KEY_SECRET;
+    // console.log(req.body);
+    const shasum = crypto.createHmac("sha256", secret);
+    shasum.update(JSON.stringify(req.body));
+    const digest = shasum.digest("hex");
+
+    console.log(digest, req.headers["x-razorpay-signature"]);
+
+    if(digest === req.headers["x-razorpay-signature"]) {
+        console.log("request is legit");
+        res.status(200).json({
+            message: "OK"
+        });
+    }else {
+        res.status(403).json({ message: "INVALID" });
+    }
+};
 const deletebooking = async function (req, res){
     try{
         let booking = await bookingModel.findByIdAndDelete(req.body.id);
@@ -68,6 +86,7 @@ const deletebooking = async function (req, res){
 };
 const getbookingById = factory.getElementById(bookingModel);
 bookingRouter.use(protectRoute);
+bookingRouter.route("/verification").post(verifyPayment)
 bookingRouter
     .route("/:id")
     .get(getbookingById)
