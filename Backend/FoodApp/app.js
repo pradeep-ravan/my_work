@@ -1,4 +1,4 @@
-// npm init -y                                   8-1:18:30
+// npm init -y                                   9-16:00
 // npm i express
 // npm i nodemon
 const express= require("express");
@@ -58,6 +58,7 @@ app.listen(8080,function(){
 })
 // /port , ip, localhost
 app.use(function (req, res){
-    res.status(404).sendFile
-        (path.join(__dirname, "404.html"));
+    res.status(404).json({
+        message: "404 page not found"
+    })
 })
