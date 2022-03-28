@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const express= require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const {JWT_KEY} = require("../../../secrets");
 const authRouter = express.Router();
 let emailSender=require("./../helpers/emailSender");
@@ -35,18 +36,21 @@ function setCreatedAt(req, res, next) {
 async function signupUser(req, res) {
         //email,user name,password
         try {
-            let userObj = req.body;
-            console.log("userObj",req.body);
-            let user = await userModel.create(userObj);
-            console.log("user", user);
+            // let userObj = req.body;
+            // console.log("userObj",req.body);
+            // let user = await userModel.create(userObj);
+            // console.log("user", user);
             
+            
+            let newUser = await userModel.create(req.body);
             // put in database
             // user.push({
             //     email, name, password
             // })
             res.status(200).json({
-            message: "user created",
-            createdUser : user
+            "message": "user created",
+            // createdUser : user
+            user: newUser
             })
         } catch (err) {
             res.status(500).json({
@@ -57,34 +61,31 @@ async function signupUser(req, res) {
 async function loginUser(req, res) {
         //email, password -> userModel ->
         try{
-            if(req.body.email){
-                let user =await  userModel.findOne({email:req.body.email})
-                if(user){
-                    if(user.password==req.body.password){
+            let { email, password } = req.body;
+            let user = await userModel.findOne({ email });
+            if(user){
+                // let user =await  userModel.findOne({email:req.body.email})
+                    let areEqual = await bcrypt.compare(password, user.password);
+                    if(areEqual){
                         //header
                         let payload = user["_id"];
                         let token = jwt.sign({ id: payload }, JWT_KEY );
                         res.cookie("jwt",token,{ httpOnly: true })
                         return res.status(200).json({
-                             user,
+                             data: user,
                              "message": "user logged in"
                          })
                      }else{
-                         return res.status(401).json({
+                         return res.status(404).json({
                              "message": "Email or password is wrong"
                          })
                      }
                 } else {
-                    return res.status(401).json({
-                        "message": "Email or password is wrong"
+                    return res.status(404).json({
+                        "message": "user not found with creds"
                     })
                 }
-            }else{
-                 return res.status(403).json({
-                    message: " Email is not present"
-                })
-            }
-        }catch(err) {
+            }catch(err) {
             res.status(500).json({
                 error:err.message,
                 "message": "can't get users"

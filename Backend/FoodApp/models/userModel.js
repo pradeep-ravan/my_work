@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const emailValidator = require("email-validator");
+const bcrypt = require("bcrypt");
 let {DB_LINK} = require("../../../secrets");
 mongoose.connect(DB_LINK,{useNewUrlParser: true,
         
@@ -59,12 +60,17 @@ const userSchema = new mongoose.Schema({
     }
 })
 userSchema.pre("save", function () {
+    const salt = await bcrypt.genSalt(10);
+    //hash = it convert password into undefined text
+    this.password = await bcrypt.hash(this.password, salt);
     //db confirm password will not saved
     this.confirmPassword = undefined;
-})
+    next();
+});
 //middleware
 userSchema.methods.resetHandler = function (password, confirmPassword){
-    this.password=password;
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
     this.confirmPassword=confirmPassword;
     //token reuse is not possible
     this.token=undefined;
