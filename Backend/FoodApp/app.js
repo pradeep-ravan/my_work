@@ -1,8 +1,11 @@
-// npm init -y                                   10-32:00
+// npm init -y                                   10-53:30
 // npm i express
 // npm i nodemon
 const express= require("express");
-
+let fs = require("fs");
+const rateLimit = require("express-rate-limit");
+const hpp = require();
+const helmet = require("helmet");
 //Server : route => request ->responsive/file
 //File system : path->interact/type -> file/folder
 // server init
@@ -22,6 +25,22 @@ const cookieParser = require("cookie-parser");
 //giving data from server
 //crud app
 //create
+app.use(rateLimit({
+    max: 100,
+    windowMs: 15 * 60 * 1000,
+    message: "Too many accounts created from this IP, please try again after an hour"
+
+}))
+app.use(hpp({
+    whiteList: [
+        'select',
+        'page',
+        'sort',
+        'myquery'
+    ]
+}))
+//to set http headers
+app.use(helmet());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
