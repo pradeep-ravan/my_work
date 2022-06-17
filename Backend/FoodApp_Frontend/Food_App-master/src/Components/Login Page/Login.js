@@ -42,7 +42,7 @@ function Login() {
                         <div className="entryText">Password</div>
                         <input className="password input" type="password" name="Password" placeholder="**********" onChange={(e) => passwordSet(e.target.value)} />
                     </div>
-                    <button className="loginBtn  form-button" type="submit" onClick={handleLogin}>
+                    <button  className="loginBtn  form-button" type="submit" onClick={handleLogin}>
                         Login
                     </button>
                     <div className='otherOption'>

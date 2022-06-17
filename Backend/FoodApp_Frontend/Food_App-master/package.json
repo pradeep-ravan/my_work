@@ -2,7 +2,7 @@
   "homepage": "",
   "name": "foodapp",
   "version": "0.1.0",
-  "proxy": "https://lifesaver123.herokuapp.com/",
+  "proxy": "https://lifesaver123.herokuapp.com/",                
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.4.1",
